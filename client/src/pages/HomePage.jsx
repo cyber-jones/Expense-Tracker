@@ -12,7 +12,7 @@ import { LOG_OUT } from "../graphql/mutations/userMutation";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const HomePage = () => {
+const HomePage = ({ profilePicture }) => {
 	const chartData = {
 		labels: ["Saving", "Expense", "Investment"],
 		datasets: [
@@ -66,7 +66,7 @@ const HomePage = () => {
 
 					<TransactionForm />
 				</div>
-				<Cards />
+				<Cards profilePicture={profilePicture} />
 			</div>
 		</>
 	);

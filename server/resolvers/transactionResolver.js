@@ -38,7 +38,6 @@ const transactionResolver = {
         updateTransaction: async (_, { input }, context) => {
             try {
                 const upadatedTransaction = await Transaction.findByIdAndUpdate(input.transactionId, input, { new: true });
-                await upadatedTransaction.save();
                 return upadatedTransaction;
             } catch (err) {
                 throw new Error(err.message  || "Internal Server Error");

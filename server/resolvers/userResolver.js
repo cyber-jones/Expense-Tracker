@@ -1,13 +1,8 @@
 import bcrypt from "bcryptjs";
-import { users } from "../data/data.js"
 import User from "../models/userSchema.js";
 
 const userResolver = {
     Query: {
-        users: () => {
-            return users;
-        },
-
         authUser: async (_, inputs, context) => {
             try {
                 const user = await context.getUser();
