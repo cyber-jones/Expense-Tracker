@@ -1,0 +1,68 @@
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone"
+import { expressMiddleware } from "@apollo/server/express4"
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer"
+import mergeCustomResolvers from "./resolvers/index.js";
+import mergeCustomTypeDefs from "./typeDefs/index.js";
+import express  from "express";
+import http from "http";
+import cors from "cors";
+import "dotenv/config"
+import { connectDb } from "./config/connectDb.js";
+import connectMongo from "connect-mongodb-session";
+import session from "express-session";
+import passport from "passport";
+import { buildContext } from "graphql-passport";
+import { configurePassport } from "./passport/passportConfig.js";
+
+
+
+connectDb();
+const app = express();
+const httpServer = http.createServer(app);
+const mongoDbStore = connectMongo(session);
+
+const store = new mongoDbStore({
+    uri: process.env.MONGO_URI,
+    collection: "sessions"
+});
+
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false, //Save session for every request
+        saveUninitialized: false, //Save unitialized session
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 7,
+            httpOnly: true
+        },
+        store,
+    })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+configurePassport();
+
+const server = new ApolloServer({
+    typeDefs: mergeCustomTypeDefs,
+    resolvers: mergeCustomResolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+});
+
+await server.start();
+
+app.use("/graphql", 
+    cors({
+        origin: "http://localhost:3000",
+        credentials: true
+    }),
+    express.json(),
+    expressMiddleware(server, {
+        context: async ({ req, res }) => buildContext({ req, res }),
+    }),
+);
+
+await new Promise( resolve  => httpServer.listen(4000, resolve));
+
+console.log(`Server ready at http://localhost:4000/graphql `);
