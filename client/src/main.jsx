@@ -9,7 +9,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const client = new ApolloClient({
   //TODO: update production uri
-  uri: 'http://localhost:4000/graphql',
+  uri: import.meta.env.VITE_NODE_ENV === "development" ? 'http://localhost:4000/graphql' : 'http://localhost:2000/graphql',
   cache: new InMemoryCache(),
   credentials:  "include"
 });
