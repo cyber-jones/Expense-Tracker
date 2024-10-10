@@ -5,7 +5,8 @@ const userTyeDef = `#graphql
         name: String!
         password: String!
         profilePicture: String
-        gender: String! 
+        gender: String!
+        transactions: [Transaction!] 
     }
 
     type Query {

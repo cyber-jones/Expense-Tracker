@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RadioButton from "../components/RadioButton";
 import InputField from "../components/InputField";
 import { useMutation } from "@apollo/client";
@@ -15,6 +15,7 @@ const SignUpPage = () => {
 		gender: "",
 	});
 
+    const navigate = useNavigate();
     const [signup, { loading }] = useMutation(SIGN_UP, {
         refetchQueries: ["GetAuthenticatedUser"]
     });
@@ -28,6 +29,9 @@ const SignUpPage = () => {
                     input: signUpData
                 }
             });
+
+            toast.success("Signed up successfully");
+            navigate("/login");
         } catch(error) {
             toast.error(error.message);
         } 

@@ -1,4 +1,5 @@
 import Transaction from "../models/transactionSchema.js";
+import User from "../models/userSchema.js";
 
 const transactionResolver = {
     Query: {
@@ -18,6 +19,26 @@ const transactionResolver = {
             try {
                 const transaction = await Transaction.findById(transactionId);
                 return transaction;
+            } catch (err) {
+                throw new Error(err.message  || "Internal Server Error");
+            }
+        },
+
+        categoryStatistics: async (_, inputs, context) => {
+            try {
+                if (!context.getUser()) new Error("Unauthorized!");
+                const userId = context.getUser()._id;
+                const transaction = await Transaction.find({ userId });
+
+                let categoryMap = {}; // { expense: 120, savings: 50, investment: 130 }
+                transaction.forEach(transaction => {
+                    if (!categoryMap[transaction.category])
+                        categoryMap[transaction.category] = 0;
+                    categoryMap[transaction.category] += transaction.amount
+                });
+
+                // [{ category: expense, totalAmount: 120 }, { category: savings, totalAmount: 50 }, { category: investment, totalAmount: 130 }]
+                return Object.entries(categoryMap).map(([category, totalAmount]) => ({ category, totalAmount }));
             } catch (err) {
                 throw new Error(err.message  || "Internal Server Error");
             }
@@ -48,6 +69,18 @@ const transactionResolver = {
             try {
                 const deletedTransaction = await Transaction.findByIdAndDelete(transactionId);
                 return deletedTransaction;
+            } catch (err) {
+                throw new Error(err.message  || "Internal Server Error");
+            } 
+        }
+    },
+
+    Transaction: {
+        user: async (parent) => {
+            try {
+                const userId = parent.userId
+                const user = await User.findById(userId);
+                return user;
             } catch (err) {
                 throw new Error(err.message  || "Internal Server Error");
             } 

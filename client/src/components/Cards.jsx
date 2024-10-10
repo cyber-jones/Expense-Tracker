@@ -3,14 +3,14 @@ import Card from "./Card";
 import { GET_TRANSACTIONS } from "../graphql/queries/transactionQuery";
 import toast from "react-hot-toast";
 
+
 const Cards = ({ profilePicture }) => {
   const { loading, error, data } = useQuery(GET_TRANSACTIONS);
-  
+
   if (loading) return <p>Loading...</p>;
   if (error) toast.error(error.message);
 
-  console.log("data", data);
-  //TODO => ADD RELATIONSHIPS
+    //TODO => ADD RELATIONSHIPS
   return (
     <div className="w-full px-10 min-h-[40vh]">
       <p className="text-5xl font-bold text-center my-10">History</p>

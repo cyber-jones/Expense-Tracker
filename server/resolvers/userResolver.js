@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../models/userSchema.js";
+import Transaction from "../models/transactionSchema.js";
 
 const userResolver = {
     Query: {
@@ -39,10 +40,10 @@ const userResolver = {
                 //https://avatar-placeholder.iran.liara.run/
                 let profilePicture = ''; 
                 if (gender.toLowerCase() == "male")
-                    profilePicture = `https://avatar-placeholder.iran.liara.run/boy?username=${username}` 
+                    profilePicture = await `https://avatar.iran.liara.run/public/boy?username=${username}` 
 
                 if (gender.toLowerCase() == "female")
-                    profilePicture = `https://avatar-placeholder.iran.liara.run/girl?username=${username}` 
+                    profilePicture = await `https://avatar.iran.liara.run/public/girl?username=${username}` 
                
                 const newUser = new User({ username, name, password: hashedPassword, profilePicture, gender});
                 await newUser.save(); 
@@ -73,6 +74,17 @@ const userResolver = {
                 });
                 context.res.clearCookie("connect.sid");
                 return { message: "Logout Successful" };
+            } catch (err) {
+                throw new Error(err.message  || "Internal Server Error");
+            }
+        }
+    },
+
+    User: {
+        transactions: async (parent) => {
+            try {
+                const transactions = await Transaction.find({ userId: parent._id });
+                return transactions;
             } catch (err) {
                 throw new Error(err.message  || "Internal Server Error");
             }

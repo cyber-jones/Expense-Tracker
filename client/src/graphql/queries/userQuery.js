@@ -11,3 +11,23 @@ export const GET_AUTHENTICATED_USER = gql`
   }
 `;
 
+export const GET_USER_AND_TRANSACTIONS = gql`
+  query GetUserAndTransactions {
+    authUser {
+      _id
+      name
+      username
+      profilePicture
+      transactions {
+        _id
+        description
+        paymentType
+        category
+        amount
+        location
+        date
+      }
+    }
+  }
+`;
+
