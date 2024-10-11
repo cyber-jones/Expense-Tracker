@@ -31,11 +31,9 @@ const store = new mongoDbStore({
 });
 
 app.use((req, res, next) => {
-    const origin = req.headers.origin;
-    if (ALLOWEDORIGINS.includes(origin))
-        res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-        res.header("Access-Control-Allow-Origin", "https://expense-tracker-gamma-rose.vercel.app");
-        res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Origin", "https://expense-tracker-gamma-rose.vercel.app");
+    res.header("Access-Control-Allow-Credentials", "true");
     return next();
 });
 
