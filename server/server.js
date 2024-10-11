@@ -14,6 +14,7 @@ import session from "express-session";
 import passport from "passport";
 import { buildContext } from "graphql-passport";
 import { configurePassport } from "./passport/passportConfig.js";
+import cookieParser from "cookie-parser";
 // import path from "path";
 
 
@@ -29,6 +30,17 @@ const store = new mongoDbStore({
     collection: "sessions"
 });
 
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (ALLOWEDORIGINS.includes(origin))
+        res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+        res.header("Access-Control-Allow-Origin", "https://expense-tracker-gamma-rose.vercel.app");
+        res.header("Access-Control-Allow-Credentials", "true");
+    return next();
+});
+
+app.use(cookieParser());
+
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
@@ -36,6 +48,7 @@ app.use(
         saveUninitialized: false, //Save unitialized session
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 7,
+            httpOnly: true,
             sameSite: "None",
             secure: true
         },
