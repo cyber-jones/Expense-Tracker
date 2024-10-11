@@ -14,7 +14,7 @@ import session from "express-session";
 import passport from "passport";
 import { buildContext } from "graphql-passport";
 import { configurePassport } from "./passport/passportConfig.js";
-import path from "path";
+// import path from "path";
 
 
 
@@ -56,7 +56,7 @@ await server.start();
 
 app.use("/graphql", 
     cors({
-        origin: "http://localhost:3000",
+        origin: ["http://localhost:3000", "https://expense-tracker.vercel.app"],
         credentials: true
     }),
     express.json(),
@@ -73,4 +73,4 @@ app.use("/graphql",
 
 await new Promise( resolve  => httpServer.listen(4000, resolve));
 
-console.log(`Server ready at http://localhost:4000/graphql `);
+console.log(`Server`);
