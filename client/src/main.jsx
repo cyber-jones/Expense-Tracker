@@ -9,7 +9,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const client = new ApolloClient({
   //TODO: update production uri
-  uri: import.meta.env.VITE_NODE_ENV === "development" ? 'http://localhost:4000/graphql' : 'https://expense-tracker-api/graphql',
+  uri: import.meta.env.VITE_NODE_ENV === "development" ? 'http://localhost:4000/graphql' : 'https://expense-tracker-api-exyn.onrender.com/graphql',
   cache: new InMemoryCache(),
   credentials:  "include"
 });
