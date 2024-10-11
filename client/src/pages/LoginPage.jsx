@@ -71,7 +71,7 @@ const LoginPage = () => {
 										disabled:opacity-50 disabled:cursor-not-allowed
 									'
 								>
-									{loading ? "Loaging" : "Log In"}
+									{loading ? "Loading" : "Log In"}
 								</button>
 							</div>
 						</form>
