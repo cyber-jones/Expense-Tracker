@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import Card from "./Card";
-import { GET_TRANSACTIONS } from "../graphql/queries/transactionQuery";
+import { GET_TRANSACTIONS } from "../graphql/quaries/transactionQuery";
 import toast from "react-hot-toast";
 
 

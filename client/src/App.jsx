@@ -6,14 +6,14 @@ import NotFoundPage from "./pages/NotFoundPage"
 import TransactionPage from "./pages/TransactionPage"
 import Header from "./components/ui/Header"
 import { useQuery } from "@apollo/client"
-import { GET_AUTHENTICATED_USER } from "./graphql/queries/userQuery"
+import { GET_AUTHENTICATED_USER } from "./graphql/quaries/userQuery"
 import { Toaster } from "react-hot-toast"
 
 
 function App() {
   const { data, loading } = useQuery(GET_AUTHENTICATED_USER);
   if (loading) return 
-  
+
   return (
     <>
       { data?.authUser && <Header /> }

@@ -8,7 +8,7 @@ import { MdLogout } from "react-icons/md";
 import toast from "react-hot-toast";
 import { useMutation, useQuery } from "@apollo/client";
 import { LOG_OUT } from "../graphql/mutations/userMutation";
-import { GET_TRANSACTION_STATISTICS } from "../graphql/queries/transactionQuery";
+import { GET_TRANSACTION_STATISTICS } from "../graphql/quaries/transactionQuery";
 import { useEffect, useState } from "react";
 
 

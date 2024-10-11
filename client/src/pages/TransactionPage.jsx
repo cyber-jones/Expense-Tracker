@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { GET_TRANSACTION } from "../graphql/queries/transactionQuery";
+import { GET_TRANSACTION } from "../graphql/quaries/transactionQuery";
 import { UPDATE_TRANSACTION } from "../graphql/mutations/transactionMutation";
 import toast from "react-hot-toast";
 import TransactionFormSkeleton from "../components/skelenton/TransactionFormSkeleton";

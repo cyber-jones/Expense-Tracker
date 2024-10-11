@@ -39,20 +39,25 @@ app.use((req, res, next) => {
 
 app.use(cookieParser());
 
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave: false, //Save session for every request
-        saveUninitialized: false, //Save unitialized session
-        cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 7,
-            httpOnly: true,
-            sameSite: 'none',
-            secure: true
-        },
-        store,
-    })
-);
+let sessionOptions = {
+    secret: process.env.SESSION_SECRET,
+    resave: false, //Save session for every request
+    saveUninitialized: false, //Save unitialized session
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true,
+        sameSite: 'strict',
+    },
+    store,
+}
+
+if (app.get('env') == 'production') {
+    app.set('trust proxy', 1);
+    sessionOptions.cookie.sameSite = 'none';
+    sessionOptions.cookie.secure = 'true';
+}
+
+app.use(session(sessionOptions));
 
 app.use(passport.initialize());
 app.use(passport.session());
